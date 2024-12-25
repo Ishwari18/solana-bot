@@ -1,15 +1,22 @@
-const axios = require('axios');
-const fs = require('fs');
-const path = require('path');
+import axios from 'axios';
+import fs from 'fs';
+import path from 'path';
 
 // ScraperAPI Key (replace with your actual API key from ScraperAPI)
 const SCRAPER_API_KEY = '9920c43e476fe4b8023f191acabdd29c';
 
-async function fetchPairAddresses() {
+// Define the structure of a TokenPair
+interface TokenPair {
+  name: string;
+  link: string;
+  pairAddress?: string;
+}
+
+async function fetchPairAddresses(): Promise<void> {
   const dataFilePath = path.join(__dirname, 'data', 'tokenPairs.json');
 
   // Read the token pairs data from the JSON file
-  let tokenPairs = [];
+  let tokenPairs: TokenPair[] = [];
   try {
     const fileData = fs.readFileSync(dataFilePath, 'utf-8');
     tokenPairs = JSON.parse(fileData);
@@ -30,7 +37,7 @@ async function fetchPairAddresses() {
         const response = await axios.get(scraperApiUrl, { timeout: 60000 });
         const html = response.data;
 
-        // Extract the pair address using a regex or DOM parser
+        // Extract the pair address using a regex
         const pairAddressMatch = html.match(/<span class="chakra-text custom-72rvq0".*?title="(.*?)">/);
         const pairAddress = pairAddressMatch ? pairAddressMatch[1] : 'N/A';
 
