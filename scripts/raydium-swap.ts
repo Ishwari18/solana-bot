@@ -38,7 +38,7 @@ import {
     getMinimumBalanceForRentExemptAccount,
     createSyncNativeInstruction,
   } from '@solana/spl-token';
-  import { CONFIG } from './config';
+  import { CONFIG } from '../config';
   
   type SwapSide = "in" | "out";
   

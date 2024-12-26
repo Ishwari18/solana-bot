@@ -1,5 +1,5 @@
 import { RaydiumSwap } from './raydium-swap';
-import { CONFIG } from './config';
+import { CONFIG } from '../config';
 import {
   PublicKey,
   LAMPORTS_PER_SOL,
