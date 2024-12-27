@@ -31,7 +31,7 @@ export async function fetchPairPrice(chainId: string, pairId: string): Promise<a
 // Function to fetch all prices from the JSON file
 export async function fetchPricesFromJson() {
   try {
-    const fileContent = await fs.readFile('./data/tokenPairs.json', 'utf-8');
+    const fileContent = await fs.readFile('./scripts/data/tokenPairs.json', 'utf-8');
     const tokenPairs = JSON.parse(fileContent);
     const prices = [];
 

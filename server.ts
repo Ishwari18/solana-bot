@@ -9,7 +9,7 @@ const port = 5000;
 app.use(cors());
 
 // Periodically fetch token prices
-//setInterval(fetchPricesFromJson, 5000); // Fetch prices every 5 seconds
+//setInterval(fetchPricesFromJson, 10000); // Fetch prices every 5 seconds
 
 // Periodically scrape tokens
 setInterval(() => {

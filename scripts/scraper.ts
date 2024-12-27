@@ -14,6 +14,7 @@ interface TokenPair {
   sells: string;
   volume: string;
   liquidity: number;
+  initialLiquidity: number;
   marketCap: string;
   makers: number;
   link: string;
@@ -42,9 +43,6 @@ export async function scrapeDexScreener(): Promise<void> {
         return parseFloat(cleaned) || 0; // Parse as float if no 'K'
       })();
 
-      // Log the raw and converted liquidity values
-      console.log(`Raw Liquidity: ${liquidityText}, Converted Liquidity: ${liquidity}`);
-
       const makers = parseInt(makersText.replace(/\D/g, ''), 10) || 0;
 
       return {
@@ -56,6 +54,7 @@ export async function scrapeDexScreener(): Promise<void> {
         sells: row.querySelector<HTMLElement>('.ds-table-data-cell.ds-dex-table-row-col-sells')?.innerText || 'N/A',
         volume: row.querySelector<HTMLElement>('.ds-table-data-cell.ds-dex-table-row-col-volume')?.innerText || 'N/A',
         liquidity,
+        initialLiquidity: liquidity, // Add initial liquidity
         marketCap: row.querySelector<HTMLElement>('.ds-table-data-cell.ds-dex-table-row-col-market-cap')?.innerText || 'N/A',
         makers,
         link: row.getAttribute('href') || 'N/A',
@@ -64,8 +63,18 @@ export async function scrapeDexScreener(): Promise<void> {
   );
 
   // Filter for tokens with liquidity > 2000
-  const filteredData = scrapedData.filter((token) => token.liquidity > 2000);
-  console.log(`Filtered ${filteredData.length} tokens with liquidity > 2000.`);
+ 
+  // Filter based on liquidity and makers
+  const filteredData = scrapedData.filter((token) => {
+    if (token.liquidity > 100000) {
+      return token.makers > 10; // Check makers > 10 for high liquidity
+    } else if (token.liquidity >= 2000 && token.liquidity <= 19000) {
+      return token.makers > 50; // Check makers > 50 for mid-range liquidity
+    }
+    return false; // Exclude other tokens
+  });
+
+  console.log(`Filtered ${filteredData.length} tokens with specified conditions.`);
 
   const dataFolder = path.join(__dirname, 'data');
   const filePath = path.join(dataFolder, 'tokenPairs.json');
