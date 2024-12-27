@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "@types/bs58": "^4.0.4",
+    "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/node-fetch": "^2.6.12",
     "@types/web": "^0.0.188"

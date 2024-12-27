@@ -15,7 +15,7 @@ function PriceMonitor() {
 
   useEffect(() => {
     fetchPrices();
-    const interval = setInterval(fetchPrices, 10000); // Fetch every 10 seconds
+    const interval = setInterval(fetchPrices, 5000); // Fetch every 10 seconds
     return () => clearInterval(interval); // Cleanup interval on component unmount
   }, []);
 

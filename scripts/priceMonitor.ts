@@ -1,19 +1,11 @@
 import fetch from 'node-fetch';
-import express from 'express';
 import { promises as fs } from 'fs';
 
-const app = express();
-const port = 5000;
-
-const cors = require('cors');
-
-app.use(cors()); 
-
 // Store latest prices in memory
-let latestPrices: any[] = [];
+export let latestPrices: any[] = [];
 
 // Function to fetch price details for a given pair
-async function fetchPairPrice(chainId: string, pairId: string): Promise<any> {
+export async function fetchPairPrice(chainId: string, pairId: string): Promise<any> {
   const url = `https://api.dexscreener.com/latest/dex/pairs/${chainId}/${pairId}`;
   try {
     const response = await fetch(url, { method: 'GET' });
@@ -36,8 +28,8 @@ async function fetchPairPrice(chainId: string, pairId: string): Promise<any> {
   }
 }
 
-// Function to periodically fetch all prices
-async function fetchPricesFromJson() {
+// Function to fetch all prices from the JSON file
+export async function fetchPricesFromJson() {
   try {
     const fileContent = await fs.readFile('./data/tokenPairs.json', 'utf-8');
     const tokenPairs = JSON.parse(fileContent);
@@ -55,19 +47,6 @@ async function fetchPricesFromJson() {
 
     latestPrices = prices;
   } catch (error) {
-    console.error('Error reading tokenpairs.json:', error);
+    console.error('Error reading tokenPairs.json:', error);
   }
 }
-
-// Start periodic fetching
-setInterval(fetchPricesFromJson, 10000); // Fetch every 10 seconds
-
-// API Endpoint to get the latest prices
-app.get('/prices', (req, res) => {
-  res.json(latestPrices);
-});
-
-// Start server
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
