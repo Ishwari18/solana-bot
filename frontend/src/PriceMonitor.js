@@ -8,6 +8,8 @@ function PriceMonitor() {
       const response = await fetch('http://localhost:5000/prices');
       const data = await response.json();
       setPrices(data);
+      // Log a message every time prices are fetched
+      console.log(`Prices fetched successfully at ${new Date().toLocaleTimeString()}`);
     } catch (error) {
       console.error('Error fetching prices:', error);
     }
@@ -15,7 +17,8 @@ function PriceMonitor() {
 
   useEffect(() => {
     fetchPrices();
-    const interval = setInterval(fetchPrices, 5000); // Fetch every 10 seconds
+    const interval = setInterval(fetchPrices, 3000); // Fetch every 3 seconds
+
     return () => clearInterval(interval); // Cleanup interval on component unmount
   }, []);
 

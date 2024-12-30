@@ -9,14 +9,14 @@ const port = 5000;
 app.use(cors());
 
 // Periodically fetch token prices
-//setInterval(fetchPricesFromJson, 10000); // Fetch prices every 5 seconds
+setInterval(fetchPricesFromJson, 3000); // Fetch prices every 5 seconds
 
 // Periodically scrape tokens
-setInterval(() => {
-  scrapeDexScreener()
-    .then(() => console.log('Scraping completed successfully.'))
-    .catch((error) => console.error('Error during scraping:', error));
-}, 60000); // Run scraping every 1 minute
+// setInterval(() => {
+//   scrapeDexScreener()
+//     .then(() => console.log('Scraping completed successfully.'))
+//     .catch((error) => console.error('Error during scraping:', error));
+// }, 60000); // Run scraping every 1 minute
 
 // API Endpoint to get the latest prices
 app.get('/prices', (req, res) => {
